@@ -8,8 +8,7 @@ from erfa import ErfaWarning
 from astropy.time import Time
 from astropy.visualization.time import time_support
 
-matplotlib = pytest.importorskip("matplotlib")
-plt = matplotlib.pyplot
+plt = pytest.importorskip("matplotlib.pyplot")
 
 # Matplotlib 3.3 added a settable epoch for plot dates and changed the default
 # from 0000-12-31 to 1970-01-01. This can be checked by the existence of
