@@ -1,19 +1,15 @@
 # Licensed under a 3-clause BSD style license - see LICENSE.rst
 
-# ruff: noqa: E402
-
-import pytest
-
-pytest.importorskip("matplotlib")
-
 from contextlib import nullcontext
 
-import matplotlib.dates
-import matplotlib.pyplot as plt
+import pytest
 from erfa import ErfaWarning
 
 from astropy.time import Time
 from astropy.visualization.time import time_support
+
+matplotlib = pytest.importorskip("matplotlib")
+plt = matplotlib.pyplot
 
 # Matplotlib 3.3 added a settable epoch for plot dates and changed the default
 # from 0000-12-31 to 1970-01-01. This can be checked by the existence of
