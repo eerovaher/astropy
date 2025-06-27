@@ -1,4 +1,4 @@
-from collections.abc import Iterable, Sequence
+from collections.abc import Sequence
 
 import numpy as np
 from numpy.typing import NDArray
@@ -23,14 +23,21 @@ def interval_overlap_length(i1: tuple[float, float], i2: tuple[float, float]) ->
     if a < c:
         if b < c:
             return 0.0
-        return b - c if b < d else d - c
-    if a < d:
-        return b - a if b < d else d - a
-    return 0.0
+        elif b < d:
+            return b - c
+        else:
+            return d - c
+    elif a < d:
+        if b < d:
+            return b - a
+        else:
+            return d - a
+    else:
+        return 0
 
 
 def histogram_intervals(
-    n: int, breaks: Sequence[float], totals: Iterable[float]
+    n: int, breaks: Sequence[float], totals: Sequence[float]
 ) -> NDArray[np.float64]:
     """Histogram of a piecewise-constant weight function.
 
@@ -54,10 +61,11 @@ def histogram_intervals(
     """
     h = np.zeros(n)
     start = breaks[0]
-    for i, tot in enumerate(totals):
+    for i in range(len(totals)):
         end = breaks[i + 1]
         for j in range(n):
-            h[j] += interval_overlap_length((j, j + 1), (n * start, n * end)) * tot
+            ol = interval_overlap_length((float(j) / n, float(j + 1) / n), (start, end))
+            h[j] += ol / (1.0 / n) * totals[i]
         start = end
 
     return h
